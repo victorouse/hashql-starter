@@ -1,0 +1,53 @@
+{
+  "name": "hashql-starter",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "rimraf public && cross-env NODE_ENV=production rollup -c ./client/rollup.config.js",
+    "client:watch": "rollup -c ./client/rollup.config.js -w",
+    "client:start": "serve public",
+    "server:start": "node ./server",
+    "server:watch": "nodemon --watch ./client/src --watch ./server ./server",
+    "start": "npm-run-all --parallel server:start client:start",
+    "db:start": "docker run --name hashql -e POSTGRES_USER=hashql -e POSTGRES_PASSWORD=hashql -d -p 5432:5432 postgres",
+    "db:stop": "docker kill hashql",
+    "dev": "npm-run-all --parallel server:watch client:*"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "hashql": "git+https://github.com/victorouse/hashql.git",
+    "postgres": "^1.0.2",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.7",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.9.5",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.8.3",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-react": "^7.8.3",
+    "@babel/preset-typescript": "^7.8.3",
+    "@babel/runtime-corejs3": "^7.8.7",
+    "@rollup/plugin-commonjs": "^11.0.2",
+    "@rollup/plugin-html": "^0.1.1",
+    "@rollup/plugin-node-resolve": "^7.1.1",
+    "@rollup/plugin-replace": "^2.3.1",
+    "@types/node": "^13.7.7",
+    "@types/react": "^16.9.23",
+    "@types/react-dom": "^16.9.5",
+    "cross-env": "^7.0.2",
+    "nodemon": "^2.0.2",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
+    "rollup": "^1.32.0",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-livereload": "^1.0.4",
+    "rollup-plugin-serve": "^1.0.1",
+    "rollup-plugin-terser": "^5.2.0",
+    "serve": "^11.3.0",
+    "typescript": "^3.8.3"
+  }
+}
