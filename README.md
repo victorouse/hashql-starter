@@ -1,53 +1,23 @@
-# HashQL Starter
+# MDX Deck + Code Surfer template
 
-A [hashql](https://github.com/hashql/hashql) starter kit.
+This project was generated with the `npm init code-surfer-deck` command.
 
-## Features
+## Development
 
-- React (hooks and all 🎣)
-- Javascript/Typescript (all the latest features 🔥)
-- Live-reload client/server (rollup + nodemon 💨)
-- Database included ([postgres](https://github.com/porsager/postgres) 💙)
+To run the presentation deck in development mode:
 
-## Getting Started
-
-The following scripts are available:
-
-```
-build         - output static build to ./client/dist
-client:watch  - compile build and watch for changes
-client:start  - serve the static build in ./client/dist
-server:start  - start the hashql node server
-server:watch  - start server and watch for changes to the ./client or ./server directory
-db:start      - start a postgres database (requires docker)
-db:stop       - stops the postgres database container
-start         - build and serve the client and the server
-dev           - build and watch the client and the server
+```sh
+npm start
 ```
 
-The easiest way to get started is to just:
+Edit the [`deck.mdx`](deck.mdx) file to get started.
 
-```
-$ npm install
-$ npm run start:db
-$ npm run dev
-```
+## Exporting
 
-## Configuration
+To build the presentation deck:
 
-### Server
-
-```
-PORT=1337
+```sh
+npm run build
 ```
 
-### Database
-
-```
-POSTGRES_URL='postgres://hashql:hashql@localhost:5432/hashql?sslmode=disable'
-PGHOST=''
-PGPORT=''
-PGDATABASE=''
-PGUSERNAME=''
-PGPASSWORD=''
-```
+For more documentation see [MDX Deck](https://github.com/jxnblk/mdx-deck) and [Code Surfer](https://codesurfer.pomb.us/)

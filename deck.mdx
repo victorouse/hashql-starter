@@ -1,0 +1,895 @@
+import {
+  CodeSurfer,
+  Step,
+  CodeSurferColumns,
+} from "code-surfer";
+import { vsDark, github } from "@code-surfer/themes";
+
+<CodeSurferColumns themes={[vsDark, github]} sizes={[1, 1]}>
+
+<Step subtitle="Hey Adrian how does a printer work?">
+
+```js
+%!PS
+ /Courier             // name the desired font
+ 20 selectfont        // choose the size in points and establish
+                      // the font as the current one
+ 72 500 moveto        // position the current point at
+                      // coordinates 72, 500 (the origin is at the
+                      // lower-left corner of the page)
+ (Hello world!) show  // stroke the text in parentheses
+ showpage             // print all on the page
+```
+
+<div>
+
+<img
+  width="900"
+  src="https://blog.inkjetwholesale.com.au/wp-content/uploads/2016/09/postscript-printing-process-1024x348.png"
+/>
+
+</div>
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurferColumns themes={[vsDark, github]} sizes={[1, 1]}>
+
+<Step subtitle="Hey Adrian how does a database work?">
+
+```sql
+SELECT  *
+FROM    foo
+WHERE   bar = 'baz'
+```
+
+<div>
+
+<img src="https://s3-us-west-2.amazonaws.com/ib-assessment-tests/problem_images/dbms_process.png" />
+
+</div>
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurferColumns themes={[vsDark, github]} sizes={[1, 1]}>
+
+<Step subtitle="Hey Adrian how does an API work?">
+
+```bash
+curl 'https://api.spaceship.com.au/v1/saver/account' -X POST \
+  -D '{ "investment_option": "universe_portfolio", ... }'
+```
+
+<div>
+
+<img src="https://www.trccompsci.online/mediawiki/images/f/fb/Clientservermodel.gif" />
+
+</div>
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurferColumns themes={[vsDark, github]} sizes={[1, 1]}>
+
+<Step subtitle="api.external/router.go">
+
+```go 2
+accountWrite
+  .HandleFunc("/account", server.HandleCreateSaverAccount)
+  .Methods(http.MethodPost)
+  .Name("creating saver account");
+```
+
+<div>
+
+<img src="https://www.trccompsci.online/mediawiki/images/f/fb/Clientservermodel.gif" />
+
+</div>
+
+</Step>
+
+<Step subtitle="api.external/saver.go">
+
+```go 7
+func (e *External) HandleCreateSaverAccount(w http.ResponseWriter, r *http.Request) {
+  // Decode
+  var body externalapi.CreateSaverAccountRequestBody
+  json.NewDecoder(r.Body).Decode(&body)
+
+  // Call to service to actually perform task
+  e.Clients.SaverProduct.CreateProductInstance(...);
+}
+```
+
+<div>
+
+<img src="https://www.trccompsci.online/mediawiki/images/f/fb/Clientservermodel.gif" />
+
+</div>
+
+</Step>
+
+<Step subtitle="srv.voyager/voyager.go">
+
+```go 6
+func (s *Server) CreateProductInstance(
+  ctx context.Context,
+  req *pbvoyager.CreateProductInstanceRequest,
+) (*pbvoyager.CreateProductInstanceResponse, error) {
+  // Call some DAO method
+  insertProductInstance(...)
+}
+```
+
+<div>
+
+<img
+  width="800"
+  src="https://user-images.githubusercontent.com/1930296/78612618-1ed25e80-78ad-11ea-9053-9626569fce39.png"
+/>
+
+</div>
+
+</Step>
+
+<Step subtitle="srv.voyager/dao.go">
+
+```go 9:13
+func insertProductInstance(
+  ctx context.Context,
+  q postgresdao.Q,
+  productID uuid.UUID,
+  accountID uuid.UUID,
+  portfolio savercommon.SaverPortfolio_Enum,
+) error {
+  _, err := q.ExecContext(ctx, `
+    INSERT INTO saver.account_product_instance (
+      id, account_id, portfolio_selection
+    ) VALUES (
+      $1, $2, $3
+    );
+  `,
+    productID,
+    accountID,
+    portfolio
+  )
+
+  return err
+}
+```
+
+<div>
+
+<img
+  width="800"
+  src="https://user-images.githubusercontent.com/1930296/78612618-1ed25e80-78ad-11ea-9053-9626569fce39.png"
+/>
+
+</div>
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurferColumns themes={[vsDark, github]} sizes={[1, 1]}>
+
+<Step subtitle="We forgot about the protos 🤦‍♂️">
+
+```go
+// grpc.schema
+service Voyager {
+  rpc CreateProductInstance(CreateProductInstanceRequest)
+    returns (CreateProductInstanceResponse);
+}
+
+message CreateProductInstanceRequest {
+  SaverPortfolio.Enum portfolio = 1;
+}
+```
+
+<div>
+
+<img
+  width="800"
+  src="https://user-images.githubusercontent.com/1930296/78612618-1ed25e80-78ad-11ea-9053-9626569fce39.png"
+/>
+
+</div>
+
+</Step>
+
+<Step subtitle="s8types/externalapi.d.ts">
+
+```js
+export interface ICreateSaverAccountRequestBody {
+  portfolio?: SaverPortfolio.Enum | null;
+}
+```
+
+<div>
+
+<img
+  width="800"
+  src="https://user-images.githubusercontent.com/1930296/78612618-1ed25e80-78ad-11ea-9053-9626569fce39.png"
+/>
+
+</div>
+
+</Step>
+
+<Step subtitle="grpc.protobuf.go.git/voyager/saver_voyager.pb.go">
+
+```go
+// grpc.protobuf.go.git/voyager/saver_voyager.pb.go
+type CreateProductInstanceRequest struct {
+  Portfolio                 savercommon.SaverPortfolio_Enum
+}
+```
+
+<div>
+
+<img
+  width="800"
+  src="https://user-images.githubusercontent.com/1930296/78612618-1ed25e80-78ad-11ea-9053-9626569fce39.png"
+/>
+
+</div>
+
+</Step>
+
+<Step subtitle="Discovered new requirements 🤦‍♂️">
+
+```go 9
+// grpc.schema
+service Voyager {
+  rpc CreateProductInstance(CreateProductInstanceRequest)
+    returns (CreateProductInstanceResponse);
+}
+
+message CreateProductInstanceRequest {
+  SaverPortfolio.Enum portfolio = 1;
+  string account_id = 2
+}
+```
+
+<div>
+
+<img
+  width="800"
+  src="https://user-images.githubusercontent.com/1930296/78612618-1ed25e80-78ad-11ea-9053-9626569fce39.png"
+/>
+
+</div>
+
+</Step>
+
+<Step subtitle="s8types/externalapi.d.ts">
+
+```js 3
+export interface ICreateSaverAccountRequestBody {
+  portfolio?: SaverPortfolio.Enum | null;
+  account_id?: string | null;
+}
+```
+
+<div>
+
+<img
+  width="800"
+  src="https://user-images.githubusercontent.com/1930296/78612618-1ed25e80-78ad-11ea-9053-9626569fce39.png"
+/>
+
+</div>
+
+</Step>
+
+<Step subtitle="grpc.protobuf.go.git/voyager/saver_voyager.pb.go">
+
+```go 3
+type CreateProductInstanceRequest struct {
+  Portfolio                 savercommon.SaverPortfolio_Enum
+  AccountId                 string
+}
+```
+
+<div>
+
+<img
+  width="800"
+  src="https://user-images.githubusercontent.com/1930296/78612618-1ed25e80-78ad-11ea-9053-9626569fce39.png"
+/>
+
+</div>
+
+</Step>
+
+<Step subtitle="Make sure everyone has it...">
+
+```bash
+# in api.external
+dep ensure -update github.com/spaceship-fspl/grpc.protobuf.go.git
+
+# in srv.voyager
+dep ensure -update github.com/spaceship-fspl/grpc.protobuf.go.git
+
+# in {app,web}.spaceship
+yarn upgrade s8types
+```
+
+<div>
+
+<img
+  width="800"
+  src="https://user-images.githubusercontent.com/1930296/78612618-1ed25e80-78ad-11ea-9053-9626569fce39.png"
+/>
+
+</div>
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurferColumns themes={[vsDark, github]} sizes={[1, 1]}>
+
+<Step>
+
+<div>
+
+# Pros
+
+- Typed ✅
+- Shared contract ✅
+- Cross-compatibility (go/typescript) ✅
+
+</div>
+
+<div>
+
+# Cons
+
+- Slow to iterate / prototype ❌
+- Carefully consider proto changes ❌
+- Learning curve ❌
+
+</div>
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+# hashql
+
+[https://github.com/hashql/hashql](https://github.com/hashql/hashql)
+
+---
+
+<CodeSurferColumns themes={[vsDark, github]} sizes={[1, 1]}>
+
+<Step subtitle="Write SQL alongside your components!">
+
+```jsx 1:5
+const query = sql`
+  SELECT  *
+  FROM    foo
+  WHERE   bar = "baz"
+`;
+
+const App = () => {
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    (async () => {
+      const results = await query();
+      setData(results);
+    })();
+  }, []);
+
+  return <pre>{JSON.stringify(data, null, 2)}</pre>;
+};
+```
+
+<div>
+
+<pre>
+  {JSON.stringify(
+    {
+      bar: "baz",
+    },
+    null,
+    2
+  )}
+</pre>
+
+</div>
+
+</Step>
+
+<Step subtitle="Write SQL alongside your components!">
+
+```jsx 12
+const query = sql`
+  SELECT  *
+  FROM    foo
+  WHERE   bar = "baz"
+`;
+
+const App = () => {
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    (async () => {
+      const results = await query();
+      setData(results);
+    })();
+  }, []);
+
+  return <pre>{JSON.stringify(data, null, 2)}</pre>;
+};
+```
+
+<div>
+
+<pre>
+  {JSON.stringify(
+    {
+      bar: "baz",
+    },
+    null,
+    2
+  )}
+</pre>
+
+</div>
+
+</Step>
+
+<Step subtitle="Write SQL alongside your components!">
+
+```jsx 17
+const query = sql`
+  SELECT  *
+  FROM    foo
+  WHERE   bar = "baz"
+`;
+
+const App = () => {
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    (async () => {
+      const results = await query();
+      setData(results);
+    })();
+  }, []);
+
+  return <pre>{JSON.stringify(data, null, 2)}</pre>;
+};
+```
+
+<div>
+
+<pre>
+  {JSON.stringify(
+    {
+      bar: "baz",
+    },
+    null,
+    2
+  )}
+</pre>
+
+</div>
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+# Magic?
+
+### HashQL!
+
+---
+
+<CodeSurferColumns themes={[vsDark, github]} sizes={[1, 1]}>
+
+<Step>
+
+```jsx 1:5
+const query = sql`
+  SELECT  *
+  FROM    foo
+  WHERE   bar = "baz"
+`;
+
+const App = () => {
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    (async () => {
+      const results = await query();
+      setData(results);
+    })();
+  }, []);
+
+  return <pre>{JSON.stringify(data, null, 2)}</pre>;
+};
+```
+
+<div>
+
+Before
+
+</div>
+
+</Step>
+
+<Step>
+
+```jsx 1
+const query = sql`da39a3ee5e6b4b0d3255bfef95601890afd80709`;
+
+const App = () => {
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    (async () => {
+      const results = await query();
+      setData(results);
+    })();
+  }, []);
+
+  return <pre>{JSON.stringify(data, null, 2)}</pre>;
+};
+```
+
+<div>
+
+After
+
+</div>
+
+</Step>
+
+<Step>
+
+```jsx 1:14
+import HashQL from "hashql";
+
+const request = (body) =>
+  fetch({
+    url: "http://localhost:8888/hql",
+    method: "POST",
+    body,
+  });
+
+const { sql, node } = HashQL(
+  ["sql"],
+  ({ tag, hash, input }) => request({ tag, hash, input })
+);
+
+const query = sql`da39a3ee5e6b4b0d32551890afd80709`;
+
+const App = () => {
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    (async () => {
+      const results = await query();
+      setData(results);
+    })();
+  }, []);
+
+  return <pre>{JSON.stringify(data, null, 2)}</pre>;
+};
+```
+
+<div>
+
+With a little help from
+
+</div>
+
+</Step>
+
+<Step>
+
+```jsx 7:9
+const query = sql("da39a3ee5e6b4b0d32551890afd80709");
+
+fetch({
+  url: "localhost:8888/hql",
+  method: "POST",
+  body: {
+    tag: "sql",
+    hash: "da39a3ee5e6b4b0d32551890afd80709",
+    input: [],
+  },
+});
+```
+
+<div>
+
+We create a request
+
+</div>
+
+</Step>
+
+<Step>
+
+```bash
+
+$ curl -X POST http://localhost:8888/sql \
+  -D '{ "tag": "sql", "hash": "da39a3ee5e6b4b0d32551890afd80709", "input": [] }'
+
+```
+
+<div>
+
+And send it!
+
+</div>
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+# Great
+
+## Now what?
+
+---
+
+<CodeSurferColumns themes={[vsDark, github]} sizes={[1, 1]}>
+
+<Step>
+
+```js
+const express = require('express')
+const app = express()
+
+app.post('/hql', (req, res) => { ... })
+```
+
+<div>
+
+Our server
+
+</div>
+
+</Step>
+
+<Step>
+
+```js 2,5
+const express = require('express')
+const Pgp = require('pg-promise')
+const app = express()
+
+const db = pgp('postgres:/localhost:5432/db?sslmode=disable')
+
+app.post('/hql', (req, res) => { ... })
+```
+
+<div>
+
+Connect to our database
+
+</div>
+
+</Step>
+
+<Step>
+
+```js 5,9:23
+const express = require("express");
+const Pgp = require("pg-promise");
+const app = express();
+
+const queries = require("./queries.json");
+
+const db = pgp(
+  "postgres:/localhost:5432/db?sslmode=disable"
+);
+
+const hql = HashQL(queries, {
+  sql: (xs, ...args) =>
+    db.query(
+      xs
+        .slice(1)
+        .reduce(
+          (acc, x, i) => acc + "$" + (i + 1) + x,
+          xs[0]
+        ),
+      args
+    ),
+});
+
+app.post("/hql", (req, res) => hql(req.body));
+```
+
+<div>
+
+Sprinkle some HashQL magic
+
+</div>
+
+</Step>
+
+<Step>
+
+```js 5
+const express = require("express");
+const Pgp = require("pg-promise");
+const app = express();
+
+const queries = require("./queries.json");
+
+const db = pgp(
+  "postgres:/localhost:5432/db?sslmode=disable"
+);
+
+const hql = HashQL(queries, {
+  sql: (xs, ...args) =>
+    db.query(
+      xs
+        .slice(1)
+        .reduce(
+          (acc, x, i) => acc + "$" + (i + 1) + x,
+          xs[0]
+        ),
+      args
+    ),
+});
+
+app.post("/hql", (req, res) => hql(req.body));
+```
+
+<div>
+
+Wait, what's this?
+
+</div>
+
+</Step>
+
+<Step>
+
+```jsx 1
+const query = sql`da39a3ee5e6b4b0d3255bfef95601890afd80709`;
+
+const App = () => {
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    (async () => {
+      const results = await query();
+      setData(results);
+    })();
+  }, []);
+
+  return <pre>{JSON.stringify(data, null, 2)}</pre>;
+};
+```
+
+<div>
+
+Remember this?
+
+</div>
+
+</Step>
+
+<Step>
+
+```js 12:19
+// rollup.config.js
+import HashQL from "hashql/rollup";
+
+export default {
+  input: "client/src/index.js",
+  output: {
+    file: "client/dist/bundle.js",
+    format: "iife",
+    sourcemaps: true,
+  },
+  plugins: [
+    HashQL({
+      tags: ["sql"],
+      output: (queries) =>
+        fs.writeFileSync(
+          "server/queries.json",
+          JSON.stringify(queries, null, 2)
+        ),
+    }),
+  ],
+};
+```
+
+<div style="text-align:center">
+
+That pre-processing step from before!
+
+[hashql/rollup](https://github.com/hashql/hashql/blob/master/rollup.js)
+
+</div>
+
+</Step>
+
+<Step>
+
+```json
+// server/queries.json
+{
+  "9d0ccbde6325bf1153dd14d3f8d4d0a3": [
+    "select * from foo where bar = 'baz'"
+  ]
+}
+```
+
+<div>
+
+And what's in there?
+
+</div>
+
+</Step>
+
+<Step>
+
+```js 13
+const express = require("express");
+const Pgp = require("pg-promise");
+const app = express();
+
+const queries = require("./queries.json");
+
+const db = pgp(
+  "postgres:/localhost:5432/db?sslmode=disable"
+);
+
+const hql = HashQL(queries, {
+  sql: (xs, ...args) =>
+    db.query("select * from foo where bar = 'baz'"),
+});
+
+app.post("/hql", (req, res) => hql(req.body));
+```
+
+<div>
+
+All that's happening at the end of the day...
+
+</div>
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+# Live demo
+
+# 🙏
+
+#### https://github.com/spaceship-fspl/hashql-starter
